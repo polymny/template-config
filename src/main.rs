@@ -1,5 +1,6 @@
 use std::collections::BTreeMap;
 use std::error::Error;
+use std::process::exit;
 use std::{env, fs};
 
 use tera::{Context, Tera};
@@ -9,6 +10,7 @@ fn main() {
         eprintln!("{}", e);
         if let Some(source) = e.source() {
             eprintln!("{}", source);
+            exit(1);
         }
     }
 }
