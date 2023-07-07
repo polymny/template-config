@@ -18,8 +18,10 @@ fn main() {
 fn run() -> Result<(), Box<dyn Error>> {
     let template_file = env::args().skip(1).next().unwrap();
     let template_content = fs::read_to_string(&template_file)?;
-
-    let context = Context::from_serialize(env::vars().collect::<BTreeMap<_, _>>())?;
+    let env = env::vars().collect::<BTreeMap<_, _>>();
+    let mut context = BTreeMap::new();
+    context.insert("env", env);
+    let context = Context::from_serialize(context)?;
     let output = Tera::one_off(&template_content, &context, false)?;
 
     println!("{}", output);
